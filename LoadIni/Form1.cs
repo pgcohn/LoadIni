@@ -71,7 +71,15 @@ namespace LoadIni
                             string val = "";
                             for (int j = 1; j < keyValue.Length; j++)
                                 val += keyValue[j];
-                            section[key] = val;
+                            if (!section.Keys.Contains(key))
+                                section.Add(key, val);
+                            else
+                            {
+                                int dups = (from dupK in section.Keys where dupK.StartsWith(key)
+                                            select dupK).Count();
+                                string dupKey = string.Format("{0}({1})", key, dups);
+                                section.Add(dupKey, val);
+                            }
                             continue;
                         }
 
